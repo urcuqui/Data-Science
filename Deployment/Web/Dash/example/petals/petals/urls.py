@@ -18,10 +18,16 @@ from django.urls import path
 # new
 from . import views
 from django.conf.urls import url
+from django.urls import include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     # new
+    path('eda/', views.eda, name='eda'),
     url(r'^$', views.index, name='index'),
-    url('eda/', views.eda, name='eda'),
+    path('django_plotly_dash/', include('django_plotly_dash.urls')),
+    path('admin/', admin.site.urls),
+
+    
+    
+    
 ]
