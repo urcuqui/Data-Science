@@ -853,3 +853,239 @@ def test_compute_accuracy(target, pred, y):
         print("\033[91m", len(failed_cases), " Tests failed")
 
     # return failed_cases, len(failed_cases) + successful_cases
+    
+    
+def test_create_transition_matrix(target, tag_counts, transition_counts):
+    successful_cases = 0
+    failed_cases = []
+
+    test_cases = [
+        {
+            "name": "default_check",
+            "input": {
+                "alpha": 0.001,
+                "tag_counts": tag_counts,
+                "transition_counts": transition_counts,
+            },
+            "expected": {
+                "0:5": np.array(
+                    [
+                        [
+                            7.03997297e-06,
+                            7.03997297e-06,
+                            7.03997297e-06,
+                            7.03997297e-06,
+                            7.03997297e-06,
+                        ],
+                        [
+                            1.35647553e-07,
+                            1.35647553e-07,
+                            1.35647553e-07,
+                            1.35647553e-07,
+                            1.35647553e-07,
+                        ],
+                        [
+                            1.44528595e-07,
+                            1.44673124e-04,
+                            6.93751711e-03,
+                            6.79298851e-03,
+                            5.05864537e-03,
+                        ],
+                        [
+                            7.32039770e-07,
+                            1.69101919e-01,
+                            7.32039770e-07,
+                            7.32039770e-07,
+                            7.32039770e-07,
+                        ],
+                        [
+                            7.26719892e-07,
+                            7.27446612e-04,
+                            7.26719892e-07,
+                            7.27446612e-04,
+                            7.26719892e-07,
+                        ],
+                    ]
+                ),
+                "30:35": np.array(
+                    [
+                        [
+                            2.21706877e-06,
+                            2.21706877e-06,
+                            2.21706877e-06,
+                            8.87049214e-03,
+                            2.21706877e-06,
+                        ],
+                        [
+                            3.75650909e-07,
+                            7.51677469e-04,
+                            3.75650909e-07,
+                            5.10888993e-02,
+                            3.75650909e-07,
+                        ],
+                        [
+                            1.72277159e-05,
+                            1.72277159e-05,
+                            1.72277159e-05,
+                            1.72277159e-05,
+                            1.72277159e-05,
+                        ],
+                        [
+                            4.47733569e-05,
+                            4.47286283e-08,
+                            4.47286283e-08,
+                            8.95019852e-05,
+                            4.47733569e-05,
+                        ],
+                        [
+                            1.03043917e-05,
+                            1.03043917e-05,
+                            1.03043917e-05,
+                            6.18366548e-02,
+                            3.09234796e-02,
+                        ],
+                    ]
+                ),
+            },
+        },
+        {
+            "name": "alpha_check",
+            "input": {
+                "alpha": 0.05,
+                "tag_counts": tag_counts,
+                "transition_counts": transition_counts,
+            },
+            "expected": {
+                "0:5": np.array(
+                    [
+                        [
+                            3.46500347e-04,
+                            3.46500347e-04,
+                            3.46500347e-04,
+                            3.46500347e-04,
+                            3.46500347e-04,
+                        ],
+                        [
+                            6.78030457e-06,
+                            6.78030457e-06,
+                            6.78030457e-06,
+                            6.78030457e-06,
+                            6.78030457e-06,
+                        ],
+                        [
+                            7.22407640e-06,
+                            1.51705604e-04,
+                            6.94233742e-03,
+                            6.79785589e-03,
+                            5.06407756e-03,
+                        ],
+                        [
+                            3.65416941e-05,
+                            1.68859168e-01,
+                            3.65416941e-05,
+                            3.65416941e-05,
+                            3.65416941e-05,
+                        ],
+                        [
+                            3.62765726e-05,
+                            7.61808024e-04,
+                            3.62765726e-05,
+                            7.61808024e-04,
+                            3.62765726e-05,
+                        ],
+                    ]
+                ),
+                "30:35": np.array(
+                    [
+                        [
+                            1.10302228e-04,
+                            1.10302228e-04,
+                            1.10302228e-04,
+                            8.93448048e-03,
+                            1.10302228e-04,
+                        ],
+                        [
+                            1.87666554e-05,
+                            7.69432872e-04,
+                            1.87666554e-05,
+                            5.10640694e-02,
+                            1.87666554e-05,
+                        ],
+                        [
+                            8.29187396e-04,
+                            8.29187396e-04,
+                            8.29187396e-04,
+                            8.29187396e-04,
+                            8.29187396e-04,
+                        ],
+                        [
+                            4.69603252e-05,
+                            2.23620596e-06,
+                            2.23620596e-06,
+                            9.16844445e-05,
+                            4.69603252e-05,
+                        ],
+                        [
+                            5.03524673e-04,
+                            5.03524673e-04,
+                            5.03524673e-04,
+                            6.09264854e-02,
+                            3.07150050e-02,
+                        ],
+                    ]
+                ),
+            },
+        },
+    ]
+
+    for test_case in test_cases:
+        result = target(**test_case["input"])
+
+    try:
+        assert isinstance(result, np.ndarray)
+        successful_cases += 1
+    except:
+        failed_cases.append(
+            {"name": test_case["name"], "expected": np.ndarray, "got": type(result),}
+        )
+        print(
+            f"Wrong output type .\n\t Expected: {failed_cases[-1].get('expected')}.\n\t Got: {failed_cases[-1].get('got')}."
+        )
+
+    try:
+        assert np.allclose(result[0:5, 0:5], test_case["expected"]["0:5"])
+        successful_cases += 1
+    except:
+        failed_cases.append(
+            {
+                "name": test_case["name"],
+                "expected": test_case["expected"]["0:5"],
+                "got": result[0:5, 0:5],
+            }
+        )
+        print(
+            f"Wrong output values in rows and columns with indexes between 0 and 5.\n\t Expected: {failed_cases[-1].get('expected')}.\n\t Got: {failed_cases[-1].get('got')}."
+        )
+
+    try:
+        assert np.allclose(result[30:35, 30:35], test_case["expected"]["30:35"])
+        successful_cases += 1
+    except:
+        failed_cases.append(
+            {
+                "name": test_case["name"],
+                "expected": test_case["expected"]["30:35"],
+                "got": result[30:35, 30:35],
+            }
+        )
+        print(
+            f"Wrong output values in rows and columns with indexes between 30 and 35.\n\t Expected: {failed_cases[-1].get('expected')}.\n\t Got: {failed_cases[-1].get('got')}."
+        )
+
+    if len(failed_cases) == 0:
+        print("\033[92m All tests passed")
+    else:
+        print("\033[92m", successful_cases, " Tests passed")
+        print("\033[91m", len(failed_cases), " Tests failed")
+
+    # return failed_cases, len(failed_cases) + successful_cases
