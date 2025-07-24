@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, jsonify
 import joblib
+import os
+
 app = Flask(__name__)
 
-
-import os
 model_filename = os.path.join(os.path.dirname(__file__), 'full.joblib')
 
 loaded_model = joblib.load(model_filename)
@@ -21,6 +21,16 @@ def classify_message(text):
     else:
         return "650000+"
 
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+@app.route("/classify", methods=["POST"])
+def classify():
+    data = request.get_json()
+    message = data.get("message", "")   
+    result = classify_message(message)    
+    return jsonify({"result": result})
 
 if __name__ == "__main__":
-    app.run(debug=False, port=5001)
+    app.run(debug=False)

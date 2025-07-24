@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SpamShieldAI</title>
+    <style>
+        @keyframes neonGlow {
+            from {
+                text-shadow: 0 0 5px rgb(255, 0, 0), 0 0 10px rgb(255, 0, 0), 0 0 15px rgb(255, 0, 0);
+            }
+            to {
+                text-shadow: 0 0 20px rgb(255, 0, 0), 0 0 30px rgb(255, 0, 0), 0 0 40px rgb(255, 0, 0);
+            }
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: rgb(255, 0, 0);
+            font-family: 'Courier New', monospace;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 30%;
+            background-color: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 2px solid rgb(255, 0, 0);
+        }
+        .pet-gif {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        width: 80px;
+        pointer-events: none;
+        }
+        .content {
+            width: 70%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2rem;
+            animation: neonGlow 1s infinite alternate;
+            margin-bottom: 1rem;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            background-color: #111;
+            color: rgb(255, 0, 0);
+            border: 1px solid rgb(255, 0, 0);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            resize: none;
+        }
+
+        button {
+            background-color: transparent;
+            border: 2px solid rgb(255, 0, 0);
+            color: rgb(255, 0, 0);
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: rgb(255, 0, 0);
+            color: #000;
+            box-shadow: 0 0 10px rgb(255, 0, 0), 0 0 20px rgb(255, 0, 0);
+        }
+
+        .result {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            color: #0f0;
+        }
+
+        .signature {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.6rem;
+            white-space: pre;
+            color: rgb(255, 0, 0);
+            opacity: 0.8;
+        }
+        .hacking-phrases {
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        color: #ff0000;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 1rem;
+        background: #111;
+        padding: 8px 16px;
+        border-radius: 6px;
+        border: 1px solid #111;
+        z-index: 1000;
+        pointer-events: none;
+    }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <img id="mascotGif" src="../static/skull.gif" alt="Mascot" width="400">
+    </div>
+    <div class="content">
+        <h1>HACK ME!! V1</h1>
+        <textarea id="spamText" placeholder="Type your message here..."></textarea>
+        <button onclick="classify()">Classify</button>
+        <div class="result" id="result"></div>
+        <div class="hacking-phrases" id="hackingPhrases"></div>
+        <div class="signature">
+            ___   ___    __   ____  ___    ___    __     __    <br>
+           |   | /  |   |  |  |  |  |  |  /  |   |  |   |  |       [0][1][0]  <br>
+           |   |/  /    |  |  |  |  |  | /  /    |  |   |  |       [0][0][1]   <br>
+           |      /     |  |  |  |  |      |     \\  \\_/  /       [1][1][1]<br>
+           |  |\\  \\   |  '--'  |  |  |\\  \\    \\     /        <br>
+           | _| `.__\\  |________|  | _| `.__\\    |____|         
+        </div>
+    </div>
+    <script>
+        async function classify() {
+            const message = document.getElementById('spamText').value;
+            const response = await fetch('/classify', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ message })
+            });
+            const data = await response.json();
+            document.getElementById('result').textContent = `Result: ${data.result}`;
+        }
+            // List all your gif filenames in the static folder
+        const gifFiles = [
+            'skull.gif',            
+            // Add more gif filenames here
+        ];
+
+        function getRandomGif(current) {
+            let next;
+            do {
+                next = gifFiles[Math.floor(Math.random() * gifFiles.length)];
+            } while (gifFiles.length > 1 && next === current);
+            return next;
+        }
+
+        function changeGif() {
+            const img = document.getElementById('mascotGif');
+            const current = img.src.split('/').pop();
+            const nextGif = getRandomGif(current);
+            img.src = `../static/${nextGif}`;
+        }
+
+        // Change gif every 5 seconds
+        setInterval(changeGif, 5000);
+
+         // Hacking phrases logic
+        const phrases = [
+            "Access granted...",
+            "Bypassing firewall...",
+            "Injecting payload...",
+            "Decrypting data...",
+            "Establishing backdoor...",
+            "Brute force in progress...",
+            "Spoofing MAC address...",
+            "Escalating privileges...",
+            "Sniffing packets...",
+            "Cracking hash...",
+            "Uploading shell...",
+            "Enumerating network...",
+            "Phishing attempt detected...",
+            "Zero-day exploit launched...",
+            "Rootkit installed...",
+            "Session hijacked...",
+            "Proxy chain enabled...",
+            "SQL injection success...",
+            "Buffer overflow triggered...",
+            "Stealth mode activated..."
+        ];
+
+        function showRandomPhrase() {
+            const el = document.getElementById('hackingPhrases');
+            const idx = Math.floor(Math.random() * phrases.length);
+            el.textContent = phrases[idx];
+        }
+        showRandomPhrase();
+        setInterval(showRandomPhrase, 5000);
+    </script>
+</body>
+</html>
