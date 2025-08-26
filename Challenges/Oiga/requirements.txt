@@ -1,5 +1,5 @@
 brotlipy==0.7.0
-certifi==2020.12.5
+certifi==2022.12.7
 cffi @ file:///D:/bld/cffi_1613414140225/work
 chardet @ file:///D:/bld/chardet_1610093646853/work
 cryptography @ file:///D:/bld/cryptography_1615406182527/work
